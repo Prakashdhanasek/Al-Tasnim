@@ -2844,12 +2844,13 @@
     .cdt-recovery-net  { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--green); min-width:80px; text-align:right; }
 
     /* ════════════════════════════════════════════════
-       OVERVIEW DASHBOARD — DARK THEME OVERRIDES
-       Scoped to #page-cmdoverview when navbar is in dark mode
-       (default = no .navbar-light on html). Tile + graph
-       colours only — no functionality changes.
+       GLOBAL DARK THEME — applied whenever html does NOT
+       have `.navbar-light`. Drives every page by flipping
+       the shared CSS tokens; page-specific blocks below
+       add small polish on top. No JS or markup changes.
        ════════════════════════════════════════════════ */
-    html:not(.navbar-light) #page-cmdoverview {
+    html:not(.navbar-light) {
+      --bg:         #0a1628;
       --surface:    #0f1b33;
       --surface-2:  #15233f;
       --border:     rgba(255,255,255,0.08);
@@ -2860,9 +2861,72 @@
       --txt-muted:  rgba(232,236,245,0.5);
       --accent:     #60a5fa;
     }
-    html:not(.navbar-light) .page-scroll:has(#page-cmdoverview.active) {
-      background: #0a1628;
+    html:not(.navbar-light) .page-scroll { background: #0a1628; }
+
+    /* Sidebar — use darker shade so it reads separately from cards */
+    html:not(.navbar-light) .sidebar {
+      background: #0a1830;
+      border-right-color: rgba(255,255,255,0.06);
     }
+    html:not(.navbar-light) .sb-brand { border-bottom-color: rgba(255,255,255,0.06); }
+    html:not(.navbar-light) .sb-item:hover { background: rgba(255,255,255,0.04); }
+    html:not(.navbar-light) .sb-item.active { background: rgba(96,165,250,0.1); }
+    html:not(.navbar-light) .sb-sub { background: #081428; border-left-color: rgba(96,165,250,0.25); }
+    html:not(.navbar-light) .sb-sub-item:hover { background: rgba(255,255,255,0.035); }
+    html:not(.navbar-light) .sb-sub-item.active { background: rgba(96,165,250,0.12); }
+    html:not(.navbar-light) .sb-dot { background: rgba(255,255,255,0.2); }
+    html:not(.navbar-light) .sb-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+    html:not(.navbar-light) .page-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); }
+
+    /* Common hardcoded-light patterns seen across multiple pages */
+    html:not(.navbar-light) .cc-toggle { background: rgba(255,255,255,0.04); }
+    html:not(.navbar-light) .cc-toggle-btn.active {
+      background: #2a4a82; color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    html:not(.navbar-light) .kpi-bar-track { background: rgba(255,255,255,0.08); }
+    html:not(.navbar-light) .cc-prog-bg   { background: rgba(255,255,255,0.08); }
+
+    /* Broad compensation for hardcoded light-theme tints used across
+       every page (progress tracks, bar wrappers, table hovers, chips).
+       Attribute selectors catch the recurring class-name suffixes. */
+    html:not(.navbar-light) [class$="-track"],
+    html:not(.navbar-light) [class*="-track "],
+    html:not(.navbar-light) [class$="-bar-wrap"],
+    html:not(.navbar-light) [class$="-bar-bg"],
+    html:not(.navbar-light) [class$="-prog-bg"],
+    html:not(.navbar-light) [class$="-mod-track"] {
+      background: rgba(255,255,255,0.08);
+    }
+    html:not(.navbar-light) [class$="-tbl"] tr:hover td,
+    html:not(.navbar-light) [class$="-table"] tr:hover td {
+      background: rgba(255,255,255,0.03);
+    }
+    html:not(.navbar-light) [class$="-tbl"] tr.total-row td,
+    html:not(.navbar-light) [class$="-tbl"] tr.grand-total td {
+      background: rgba(255,255,255,0.06);
+    }
+    html:not(.navbar-light) .pr-cfg-chip,
+    html:not(.navbar-light) .pi2-group-tag.inelig,
+    html:not(.navbar-light) .dd-rule-chip,
+    html:not(.navbar-light) .dd-status-deprecated {
+      background: rgba(255,255,255,0.06);
+    }
+    html:not(.navbar-light) .ai-toggle-chip .dot { background: rgba(255,255,255,0.28); }
+    html:not(.navbar-light) .pa-wi-slider { background: rgba(255,255,255,0.12); }
+    html:not(.navbar-light) .pa-gantt-bar-wrap,
+    html:not(.navbar-light) .cdt-gantt-row:hover,
+    html:not(.navbar-light) .cdt-cal-cell.empty,
+    html:not(.navbar-light) .lp-att-cell.na,
+    html:not(.navbar-light) .mat-heat-cell.h-na {
+      background: rgba(255,255,255,0.05);
+    }
+    html:not(.navbar-light) .pr-config-header:hover,
+    html:not(.navbar-light) .pr-btn-outline:hover { background: rgba(255,255,255,0.04); }
+
+    /* ════════════════════════════════════════════════
+       OVERVIEW DASHBOARD — page-specific polish
+       ════════════════════════════════════════════════ */
     html:not(.navbar-light) #page-cmdoverview .kpi:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
     html:not(.navbar-light) #page-cmdoverview .kpi-bar-track { background: rgba(255,255,255,0.08); }
     html:not(.navbar-light) #page-cmdoverview .cc-prog-bg   { background: rgba(255,255,255,0.08); }
@@ -2915,6 +2979,73 @@
 
     /* Summary-bar tweaks: page-title colour, sub-section background */
     html:not(.navbar-light) #page-cmdoverview .page-title { color: var(--txt-1); }
+
+    /* ════════════════════════════════════════════════
+       CREW MASTER — DARK THEME OVERRIDES
+       Same pattern as Overview: dark palette active by
+       default, light palette (html.navbar-light) leaves
+       original styling untouched. Tile/card colours only.
+       ════════════════════════════════════════════════ */
+    html:not(.navbar-light) #page-crewmaster {
+      --surface:    #0f1b33;
+      --surface-2:  #15233f;
+      --border:     rgba(255,255,255,0.08);
+      --border-2:   rgba(255,255,255,0.05);
+      --txt-1:      #e8ecf5;
+      --txt-2:      #c7cfe0;
+      --txt-dim:    rgba(232,236,245,0.6);
+      --txt-muted:  rgba(232,236,245,0.5);
+      --accent:     #60a5fa;
+    }
+    html:not(.navbar-light) .page-scroll:has(#page-crewmaster.active) {
+      background: #0a1628;
+    }
+
+    /* Summary cards */
+    html:not(.navbar-light) #page-crewmaster .cm-sum-card:hover {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+    html:not(.navbar-light) #page-crewmaster .cm-sum-card.active {
+      background: rgba(96,165,250,0.08);
+      border-color: var(--accent);
+    }
+    html:not(.navbar-light) #page-crewmaster .cm-sum-card.active::after {
+      border-color: transparent var(--accent) transparent transparent;
+    }
+
+    /* Toolbar: search + view toggle */
+    html:not(.navbar-light) #page-crewmaster .cm-search input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.18);
+    }
+    html:not(.navbar-light) #page-crewmaster .cm-view-toggle {
+      background: rgba(255,255,255,0.04);
+    }
+    html:not(.navbar-light) #page-crewmaster .cm-view-btn.active {
+      background: #2a4a82; color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    /* Grid cards */
+    html:not(.navbar-light) #page-crewmaster .cm-card:hover {
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    }
+    html:not(.navbar-light) #page-crewmaster .cm-card-sno {
+      background: rgba(255,255,255,0.06);
+    }
+    html:not(.navbar-light) #page-crewmaster .cm-card-formation-label {
+      border-top-color: var(--border);
+    }
+
+    /* Table */
+    html:not(.navbar-light) #page-crewmaster .cm-table tr:hover td {
+      background: rgba(96,165,250,0.06);
+    }
+
+    /* Page title & breadcrumb inherit the overridden tokens */
+    html:not(.navbar-light) #page-crewmaster .page-title { color: var(--txt-1); }
+    html:not(.navbar-light) #page-crewmaster .breadcrumb a { color: var(--txt-2); }
+    html:not(.navbar-light) #page-crewmaster .breadcrumb .current { color: var(--txt-1); }
   </style>
 </head>
 <body>
